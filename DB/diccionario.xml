@@ -1,0 +1,44 @@
+<diccionario>
+    <sentimientos_positivos>
+        <palabra>feliz</palabra>
+        <palabra>alegre</palabra>
+        <palabra>genial</palabra>
+        <palabra>fant&#225;stico</palabra>
+        <palabra>emocionado</palabra>
+        <palabra>optimista</palabra>
+        <palabra>incre&#237;ble</palabra>
+        <palabra>amor</palabra>
+        <palabra>amistad</palabra>
+        <palabra>celebraci&#243;n</palabra>
+        <palabra>agradecido</palabra>
+        <palabra>divertido</palabra>
+        <palabra>entusiasmado</palabra>
+        <palabra>apasionado</palabra>
+        <palabra>orgulloso</palabra>
+        <palabra>logro</palabra>
+        <palabra>triste</palabra>
+        <palabra>fantastico</palabra>
+        <palabra>increible</palabra>
+        <palabra>celebracion</palabra>
+    <palabra>bruce</palabra><palabra>happy</palabra><palabra>siuu</palabra></sentimientos_positivos>
+    <sentimientos_negativos>
+        <palabra>decepcionado</palabra>
+        <palabra>enojado</palabra>
+        <palabra>frustrado</palabra>
+        <palabra>infeliz</palabra>
+        <palabra>abrumado</palabra>
+        <palabra>estresado</palabra>
+        <palabra>enojo</palabra>
+        <palabra>odio</palabra>
+        <palabra>desesperado</palabra>
+        <palabra>soledad</palabra>
+        <palabra>l&#225;grimas</palabra>
+        <palabra>tristeza</palabra>
+        <palabra>des&#225;nimo</palabra>
+        <palabra>lagrimas</palabra>
+        <palabra>desanimo</palabra>
+    <palabra>bruce triste</palabra></sentimientos_negativos>
+    <sentimientos_negativos_rechazados />
+    <sentimientos_positivo_rechazados />
+
+</diccionario>
