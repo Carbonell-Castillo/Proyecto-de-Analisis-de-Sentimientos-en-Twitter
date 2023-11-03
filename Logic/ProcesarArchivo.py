@@ -1,7 +1,7 @@
 import unicodedata
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
-import temp as temp
+from Logic.Analizador import Analizador
 
 class ProcesarArchivo:
     def __init__(self, xml_file_path):
@@ -24,15 +24,21 @@ class ProcesarArchivo:
             treeXML = ET.parse(self.xml_file_path)
             rootXML = treeXML.getroot()
             root = mensaje_xml
+            
             if len(rootXML) == 0:
                 # Si no existe, crea un nuevo elemento MENSAJES
                 root = ET.Element('MENSAJES')
             else:
                 for mensaje in root:
                     # Normaliza el contenido del mensaje (convertir a minúsculas y quitar tildes)
+                    texto_fecha = mensaje.find('FECHA').text
                     texto_mensaje = mensaje.find('TEXTO').text
+                    analizador = Analizador(texto_fecha, texto_mensaje)
+                    analizador.analizar_texto()
+                    analizador.generarArchivo()
                     print(texto_mensaje)
                     texto_normalizado = self.normalizar_texto(texto_mensaje)
+                    
                     print("Texto normalizado")
                     print(texto_normalizado)
                     mensaje.find('TEXTO').text = texto_normalizado

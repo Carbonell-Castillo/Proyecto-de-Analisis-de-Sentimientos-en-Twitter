@@ -1,20 +1,35 @@
-def procesar_texto(texto):
-    menciones_estudiante01 = []
-    contador_estudiante01 = 0
+from datetime import datetime
 
-    palabras = texto.split()  # Divide el texto en palabras
+def extraer_fecha(texto):
+    # Encuentra la parte del texto que contiene la fecha en el formato dd/mm/yyyy
+    import re
+    fecha_str = re.search(r'\d{2}/\d{2}/\d{4}', texto)
+    
+    if fecha_str:
+        fecha_str = fecha_str.group()
+        # Define el formato esperado de la fecha
+        formato = "%d/%m/%Y"
 
-    for palabra in palabras:
-        if palabra.startswith('@'):
-            mencion = palabra[1:]  # Elimina el "@" del inicio de la palabra
-            menciones_estudiante01.append(mencion)
-            contador_estudiante01 += 1
+        try:
+            fecha = datetime.strptime(fecha_str, formato).date()
+            return fecha.strftime("%d/%m/%Y")
+        except ValueError:
+            return None
+    else:
+        return None
 
-    return menciones_estudiante01, contador_estudiante01
+texto1 = "Guatemala, 16/01/2023 10:30 hrs."
+texto2 = "Guatemalaa holaa 16/01/2023 10:30 hrs."
 
-texto = "Bienvenido a USAC @estudiante01 por otro lado @estudiante02, es un gusto feliz que seas parte de esta institucion #bienvenidaUSAC#"
+fecha1 = extraer_fecha(texto1)
+fecha2 = extraer_fecha(texto2)
 
-menciones, contador = procesar_texto(texto)
+if fecha1:
+    print("Fecha extraída (Texto 1):", fecha1)
+else:
+    print("No se pudo extraer la fecha del Texto 1.")
 
-print("Menciones:", menciones)
-print("Contador de menciones:", contador)
+if fecha2:
+    print("Fecha extraída (Texto 2):", fecha2)
+else:
+    print("No se pudo extraer la fecha del Texto 2.")

@@ -35,10 +35,3 @@ class ListaEnlazada:
             print(actual.valor)
             actual = actual.siguiente
 
-# Ejemplo de uso
-lista = ListaEnlazada()
-lista.agregar("Juan")
-lista.agregar("María")
-lista.agregar("Carlos")
-
-print("Nombres en la lista enlazada:", lista.mostrar())
