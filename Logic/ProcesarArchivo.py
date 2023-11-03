@@ -143,7 +143,7 @@ class ProcesarArchivo:
             return 'Error al procesar el archivo XML: ' + str(e)
 
     def consultarSentimientos(self, fechaInicial, fechaFinal):
-        with open("DB/mensajes", "r") as xml_file:
+        with open("DB/mensajes.xml", "r") as xml_file:
             xml_content = xml_file.read()
         resultadoMensaje=""
         for mensaje in xml_content:
@@ -169,8 +169,80 @@ class ProcesarArchivo:
                 resultado = analizador.analizarSentimientos(texto)
                 resultadoMensaje+= "Fecha: "+ fechaResultado + "\n" + resultado
         return resultadoMensaje
-    
 
+    def consultarHashtags(self, fechaInicial, fechaFinal):
+        resultadoMensaje = ""
+        
+        try:
+            tree = ET.parse("DB/mensajes.xml")
+            root = tree.getroot()
 
+            for mensaje in root.iter('MENSAJE'):
+                fecha_str = mensaje.find('FECHA').text
+                fechaResultado = ""
                 
+                fecha_match = re.search(r'\d{2}/\d{2}/\d{4}', fecha_str)
+                
+                if fecha_match:
+                    fecha_str = fecha_match.group()
+                    formato = "%d/%m/%Y"
+                    
+                    try:
+                        fechaResultado = datetime.strptime(fecha_str, formato).date()
+                        fechaResultado = fechaResultado.strftime("%d/%m/%Y")
+                    except ValueError:
+                        fechaResultado = None
+                print("Fecha inicial "+ fechaInicial)
+                print("Fecha final "+ fechaFinal)
+                print("R"+fechaResultado)
+
+                if fechaInicial <= fechaResultado <= fechaFinal:
+                    texto = mensaje.find('TEXTO').text
+                    print("Entroo")
+                    print(texto)
+                    analizador = Analizador(fecha_str, texto)
+                    resultado = analizador.analizarHashtags(texto)
+                    resultadoMensaje += "Fecha: " + fechaResultado + "\n" + resultado
+        except Exception as e:
+            resultadoMensaje = "Error al procesar el archivo XML: " + str(e)
+            
+        return resultadoMensaje
+    
+    def consultarMenciones(self, fechaInicial, fechaFinal):
+        resultadoMensaje = ""
+        
+        try:
+            tree = ET.parse("DB/mensajes.xml")
+            root = tree.getroot()
+
+            for mensaje in root.iter('MENSAJE'):
+                fecha_str = mensaje.find('FECHA').text
+                fechaResultado = ""
+                
+                fecha_match = re.search(r'\d{2}/\d{2}/\d{4}', fecha_str)
+                
+                if fecha_match:
+                    fecha_str = fecha_match.group()
+                    formato = "%d/%m/%Y"
+                    
+                    try:
+                        fechaResultado = datetime.strptime(fecha_str, formato).date()
+                        fechaResultado = fechaResultado.strftime("%d/%m/%Y")
+                    except ValueError:
+                        fechaResultado = None
+                print("Fecha inicial "+ fechaInicial)
+                print("Fecha final "+ fechaFinal)
+                print("R"+fechaResultado)
+
+                if fechaInicial <= fechaResultado <= fechaFinal:
+                    texto = mensaje.find('TEXTO').text
+                    print("Entroo")
+                    print(texto)
+                    analizador = Analizador(fecha_str, texto)
+                    resultado = analizador.analizarMenciones(texto)
+                    resultadoMensaje += "Fecha: " + fechaResultado + "\n" + resultado
+        except Exception as e:
+            resultadoMensaje = "Error al procesar el archivo XML: " + str(e)
+            
+        return resultadoMensaje
                 

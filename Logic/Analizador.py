@@ -137,7 +137,46 @@ class Analizador:
 
         return resultado
 
+    def analizarHashtags(self, xmlData):
+        listaHashtag = temp.ListaEnlazada()
+        contadorHashtag = 0
+        palabras = xmlData.split()
+        for palabra in palabras:
+            if palabra.startswith('#') and palabra.endswith('#'):
+                if listaHashtag.estaVacia():
+                    listaHashtag.agregar(palabra[1:-1])
+                    contadorHashtag += 1
+                else:
+                    if not listaHashtag.buscar(palabra[1: -1]):
+                        listaHashtag.agregar(palabra[1: -1])
+                        contadorHashtag += 1                        
 
+        ##contador de cuantas veces aparece es hastag en el texto
+        resultado = listaHashtag.buscarxmlData(palabras)
+        print("El resultado es: "+ resultado)
+        return resultado
+
+    def analizarMenciones(self, xmlData):
+        listaMenciones = temp.ListaEnlazada()
+        contador = 0
+        palabras = xmlData.split()
+        for palabra in palabras:
+            if palabra.startswith('@'):
+                if listaMenciones.estaVacia():
+                    listaMenciones.agregar(palabra[1:])
+                    contador += 1
+                else:
+                    if not listaMenciones.buscar(palabra[1:]):
+                        listaMenciones.agregar(palabra[1:])
+                        contador += 1
+                        
+        resultado = listaMenciones.buscarxmlDataMenciones(palabras)
+        print("El resultado es: "+ resultado)
+        return resultado
+        
+
+                
+            
 
 
         

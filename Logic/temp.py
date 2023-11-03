@@ -29,6 +29,42 @@ class ListaEnlazada:
             actual = actual.siguiente
         return False
     
+
+    def buscarxmlData(self, xmlData):
+        palabras = xmlData
+        actual = self.cabeza
+        contador=0
+        resultadoTexto=""
+        while actual:
+            for palabra in palabras:
+                if palabra.startswith("#") and palabra.endswith("#"):
+                    palabra = palabra.replace("#", "")
+                    print("compara ->"+palabra+" con ->"+actual.valor)
+                    if actual.valor == palabra:
+                        contador += 1
+                        resultadoTexto += "#"+palabra + "# :"+ str(contador) + " \n"
+            contador=0
+            actual = actual.siguiente
+
+        return resultadoTexto
+    
+    def buscarxmlDataMenciones(self, xmlData):
+        palabras = xmlData
+        actual = self.cabeza
+        contador=0
+        resultadoTexto=""
+        while actual:
+            for palabra in palabras:
+                if palabra.startswith("@"):
+                    palabra = palabra.replace("@", "")
+                    print("compara ->"+palabra+" con ->"+actual.valor)
+                    if actual.valor == palabra:
+                        contador += 1
+                        resultadoTexto += "@"+palabra + " :"+ str(contador) + "\n"
+            contador=0
+            actual = actual.siguiente
+
+        return resultadoTexto
     def mostrar(self):
         actual = self.cabeza
         while actual:
