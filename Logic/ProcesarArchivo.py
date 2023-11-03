@@ -122,6 +122,7 @@ class ProcesarArchivo:
 
             # Crear el árbol XML y escribirlo en el archivo "resumenConfig.xml"
             resumen_tree = ET.ElementTree(resumen_configuracion)
+            
             xml_string = ET.tostring(resumen_configuracion, encoding='utf-8').decode()
             xml_string = xml.dom.minidom.parseString(xml_string).toprettyxml()
             with open('DB/resumenConfigTemp.xml', 'w') as xml_file:
