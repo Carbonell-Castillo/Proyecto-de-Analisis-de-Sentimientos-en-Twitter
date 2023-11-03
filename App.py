@@ -54,11 +54,15 @@ def procesar_xml():
             mensaje_xml = ET.fromstring(xml_data)
 
             procesador = ProcesarArchivo(xml_file_path)
-
+            
             # Llama al método para procesar el XML
-            resultado = procesador.procesar_xml(mensaje_xml)
+            procesador.procesar_xml(mensaje_xml)
+            
+            with open("DB/resumenMensajesTemp.xml", "r") as xml_file:
+                xml_content = xml_file.read()
+            
+            return xml_content
 
-            return resultado
         else:
             return 'Formato de archivo XML no válido'
 
@@ -107,25 +111,11 @@ def procesar_xml3():
 
             # Llama al método para procesar el XML
             resultado = procesador.grabar_configuracion(mensaje_xml)
-            return resultado
-            # treeDiccionario = ET.parse(xml_file_path_diccionario)
-            # rootDiccionario = treeDiccionario.getroot()
-
-            # for sentimientos in root:
-            #     tipo_sentimientos = sentimientos.tag
-            #     for palabra_element in sentimientos.findall('palabra'):
-            #         palabra = palabra_element.text
-
-            #         # Verifica si la palabra ya existe en el diccionario antes de agregarla
-            #         if palabra not in [palabra.text for palabra in rootDiccionario.find(tipo_sentimientos)]:
-            #             nueva_palabra = ET.Element('palabra')
-            #             nueva_palabra.text = palabra
-            #             rootDiccionario.find(tipo_sentimientos).append(nueva_palabra)
-
-            # # Guarda el árbol XML del diccionario actualizado en el archivo
-            # treeDiccionario = ET.ElementTree(rootDiccionario)
-            # treeDiccionario.write(xml_file_path_diccionario)
-
+            
+            with open("DB/resumenConfigTemp.xml", "r") as xml_file:
+                xml_content = xml_file.read()
+            
+            return xml_content
         else:
             return 'Formato de archivo XML no válido'
 

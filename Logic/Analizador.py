@@ -97,3 +97,48 @@ class Analizador:
         with open(path, "w") as xml_file:
             xml_file.write(pretty_xml)
     
+    def analizarSentimientos(self, xmlData):
+        listaDiccionarioPositivas = temp.ListaEnlazada()
+        listaDiccionarioNegativosRechazados = temp.ListaEnlazada()
+
+        with open("DB/diccionario.xml", "r") as xml_file:
+            xml_content = xml_file.read()
+
+    # Utiliza la biblioteca ElementTree para analizar el archivo XML
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(xml_content)
+
+        # Itera a través de las palabras de sentimientos positivos
+        for palabra_element in root.find("sentimientos_positivos"):
+            palabra = palabra_element.text
+            listaDiccionarioPositivas.agregar(palabra)
+
+        # Itera a través de las palabras de sentimientos negativos rechazados
+        for palabra_element in root.find("sentimientos_negativos"):
+            palabra = palabra_element.text
+            listaDiccionarioNegativosRechazados.agregar(palabra)
+
+        #busca en todo el texto que exista alguna palabra
+        contadorPositivas =0 
+        contadorNegativas = 0
+        contadorNeutro=0
+        #recorrer todo el xmlData en busqeda que exista una palabra
+        texto_en_palabras = xmlData.split()
+        for palabra in texto_en_palabras:
+            if listaDiccionarioPositivas.buscar(palabra):
+                contadorPositivas += 1
+            elif listaDiccionarioNegativosRechazados.buscar(palabra):
+                contadorNegativas += 1
+        resultado=""
+        if contadorPositivas == contadorNegativas:
+            contadorNeutro += 1
+
+        resultado= "Mensaje con sentimiento positivo: "+ str(contadorPositivas) +"\nMensaje con sentimiento negativo: "+ str(contadorNegativas) +"\nMensaje con sentimiento neutro: "+ str(contadorNeutro)
+
+        return resultado
+
+
+
+
+        
+

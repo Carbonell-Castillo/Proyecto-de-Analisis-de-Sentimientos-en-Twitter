@@ -2,6 +2,8 @@ import unicodedata
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 from Logic.Analizador import Analizador
+from datetime import datetime
+import re
 
 class ProcesarArchivo:
     def __init__(self, xml_file_path):
@@ -27,6 +29,7 @@ class ProcesarArchivo:
             
             if len(rootXML) == 0:
                 # Si no existe, crea un nuevo elemento MENSAJES
+                print("No existen")
                 root = ET.Element('MENSAJES')
             else:
                 for mensaje in root:
@@ -62,7 +65,6 @@ class ProcesarArchivo:
             rootDiccionario = treeDiccionario.getroot()
             root = configuracion_xml
 
-            # Listas para almacenar palabras positivas y negativas
             palabras_positivas = [palabra.text for palabra in rootDiccionario.find('sentimientos_positivos')]
             palabras_negativas = [palabra.text for palabra in rootDiccionario.find('sentimientos_negativos')]
             palabras_negativas_rechasadas = [palabra.text for palabra in rootDiccionario.find('sentimientos_negativos_rechazados')]
@@ -122,9 +124,53 @@ class ProcesarArchivo:
             resumen_tree = ET.ElementTree(resumen_configuracion)
             xml_string = ET.tostring(resumen_configuracion, encoding='utf-8').decode()
             xml_string = xml.dom.minidom.parseString(xml_string).toprettyxml()
+            with open('DB/resumenConfigTemp.xml', 'w') as xml_file:
+                xml_file.write(xml_string)
+
+            num_palabras_positivas = len(palabras_positivas)
+            num_palabras_negativas = len(palabras_negativas)
+            resumen_configuracionTodo = ET.Element('CONFIG_RECIBIDA')
+            ET.SubElement(resumen_configuracionTodo, 'PALABRAS_POSITIVAS').text = str(num_palabras_positivas)
+            ET.SubElement(resumen_configuracionTodo, 'PALABRAS_POSITIVAS_RECHAZADA').text = str(num_palabras_positivas_rechazadas)
+            ET.SubElement(resumen_configuracionTodo, 'PALABRAS_NEGATIVAS').text = str(num_palabras_negativas)
+            ET.SubElement(resumen_configuracionTodo, 'PALABRAS_NEGATIVAS_RECHAZADA').text = str(num_palabras_negativas_rechazadas)
+            
             with open('DB/resumenConfig.xml', 'w') as xml_file:
                 xml_file.write(xml_string)
 
             return 'Archivo XML procesado correctamente'
         except Exception as e:
             return 'Error al procesar el archivo XML: ' + str(e)
+
+    def consultarSentimientos(self, fechaInicial, fechaFinal):
+        with open("DB/mensajes", "r") as xml_file:
+            xml_content = xml_file.read()
+        resultadoMensaje=""
+        for mensaje in xml_content:
+            fecha = mensaje.find('FECHA').text
+            fecha_str= re.search(r'\d{2}/\d{2}/\d{4}', self.fecha)
+            fechaResultado=""
+
+            if fecha_str:
+                fecha_str = fecha_str.group()
+                formato = "%d/%m/%Y"
+
+                try:
+                    fechfechaResultado = datetime.strptime(fecha_str, formato).date()
+                    fechaResultado = fecha.strftime("%d/%m/%Y")
+                except ValueError:
+                    fechaResultado = None
+            else:
+                fechaResultado = None
+
+            if fechaResultado >= fechaInicial and fechaResultado <= fechaFinal:
+                texto = mensaje.find('TEXTO').text
+                analizador = Analizador(fecha, texto)
+                resultado = analizador.analizarSentimientos(texto)
+                resultadoMensaje+= "Fecha: "+ fechaResultado + "\n" + resultado
+        return resultadoMensaje
+    
+
+
+                
+                
