@@ -122,26 +122,26 @@ def procesar_xml3():
     except Exception as e:
         return 'Error al procesar el archivo XML: ' + str(e)
 
-@app.route('/devolverHashtags', methods=['POST'])
+@app.route('/devolverHashtags', methods=['GET'])
 def devolverHashtags():
     global fechas_seleccionadas
 
-    if request.method == 'POST':
-        fecha_inicial = request.form.get('fecha_inicial')
-        fecha_final = request.form.get('fecha_final')
+    if request.method == 'GET':
+        fecha_inicial = request.args.get('fecha_inicial')
+        fecha_final = request.args.get('fecha_final')
 
         procesador = ProcesarArchivo(xml_file_path)
         resultado= procesador.consultarHashtags(fecha_inicial, fecha_final)
 
         return resultado
         
-@app.route('/devolverMenciones', methods=['POST'])
+@app.route('/devolverMenciones', methods=['GET'])
 def devolverMenciones():
     global fechas_seleccionadas
 
-    if request.method == 'POST':
-        fecha_inicial = request.form.get('fecha_inicial')
-        fecha_final = request.form.get('fecha_final')
+    if request.method == 'GET':
+        fecha_inicial = request.args.get('fecha_inicial')
+        fecha_final = request.args.get('fecha_final')
 
         procesador = ProcesarArchivo(xml_file_path)
         resultado= procesador.consultarMenciones(fecha_inicial, fecha_final)
